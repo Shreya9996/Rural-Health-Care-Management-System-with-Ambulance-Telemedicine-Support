@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Dashboard | Rural Healthcare Support System</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Leaflet CSS (FREE MAP) -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+        .sos-btn.active {
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0% { background: #dc3545; }
+    50% { background: #ff6b6b; }
+    100% { background: #dc3545; }
+}
+
+        body {
+            background: #f4f8fb;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        #map {
+            height: 350px;
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #0d6efd, #20c997);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card-option {
+            border-radius: 15px;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-option:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .sos-btn {
+            background: #dc3545;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-4">
+
+    <!-- HEADER -->
+    <div class="dashboard-header text-center">
+        <h2>👋 Welcome, Patient</h2>
+        <p>Rural Healthcare Support System</p>
+    </div>
+
+    <!-- SOS -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="sos-btn" onclick="activateSOS()">
+                🚨 EMERGENCY SOS
+                <p class="fs-6 mt-2">
+                    Get immediate help from doctors, ambulances & health workers
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAP -->
+    <div id="map"></div>
+
+    <!-- Ambulance Live Tracking -->
+<div class="card p-3 mb-4">
+    <h5>🚑 Ambulance Live Tracking</h5>
+    <p class="text-muted">Ambulance is on the way to your location</p>
+</div>
+
+
+    <!-- OPTIONS -->
+    <div class="row g-4">
+
+        <!-- Telemedicine -->
+        <div class="col-md-4">
+            <div class="card card-option text-center p-4">
+                <div class="icon text-primary">
+                    <i class="bi bi-camera-video-fill"></i>
+                </div>
+                <h5>Telemedicine Consultation</h5>
+                <p>Consult doctors online via video call & digital prescription.</p>
+                <button class="btn btn-outline-primary" onclick="startTelemedicine()">Consult Now</button>
+            </div>
+        </div>
+
+        <!-- Health Worker -->
+        <div class="col-md-4">
+            <div class="card card-option text-center p-4">
+                <div class="icon text-success">
+                    <i class="bi bi-person-heart"></i>
+                </div>
+                <h5>Health Worker Support</h5>
+                <p>Get help from nearby health workers for first aid.</p>
+                <button class="btn btn-outline-success">Request Support</button>
+            </div>
+        </div>
+
+        <!-- Ambulance -->
+        <div class="col-md-4">
+            <div class="card card-option text-center p-4">
+                <div class="icon text-danger">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <h5>Ambulance Service</h5>
+                <p>Request ambulance with live GPS tracking.</p>
+               <button class="btn btn-outline-danger" onclick="callAmbulance()">
+    Call Ambulance
+</button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EXTRA FEATURES -->
+    <div class="row mt-5 g-4">
+
+        <div class="col-md-6">
+            <div class="card card-option p-4">
+                <h5><i class="bi bi-clock-history"></i> Medical History</h5>
+                <p>View previous consultations and prescriptions.</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card card-option p-4">
+                <h5><i class="bi bi-calendar-check"></i> Follow-up Reminders</h5>
+                <p>Medicine & appointment reminders.</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- <script>
+let patientLat = null;
+let patientLng = null;
+let map = null;
+
+function activateSOS() {
+
+    if (patientLat === null || patientLng === null) {
+        alert("📍 Location not ready yet. Please wait...");
+        return;
+    }
+
+    fetch("/send_sos", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `name=Patient&lat=${patientLat}&lng=${patientLng}`
+    })
+    .then(() => {
+        alert("🚨 SOS sent to doctor successfully!");
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (!navigator.geolocation) {
+        alert("❌ Geolocation not supported");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+
+            patientLat = position.coords.latitude;
+            patientLng = position.coords.longitude;
+
+            map = L.map("map").setView([patientLat, patientLng], 14);
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "© OpenStreetMap"
+            }).addTo(map);
+
+            // Patient marker
+            const patientMarker = L.marker([patientLat, patientLng])
+                .addTo(map)
+                .bindPopup("📍 You are here")
+                .openPopup();
+
+            // Ambulance marker
+            L.marker([patientLat + 0.01, patientLng + 0.01])
+                .addTo(map)
+                .bindPopup("🚑 Nearest Ambulance");
+
+            // Health Worker marker
+            L.marker([patientLat - 0.008, patientLng + 0.006])
+                .addTo(map)
+                .bindPopup("🧑‍⚕️ Health Worker Nearby");
+        },
+        function () {
+            alert("❌ Please allow location access");
+        }
+    );
+});
+</script> -->
+
+<script>
+let patientLat = null;
+let patientLng = null;
+let map = null;
+let ambulanceMarker = null;
+let ambulanceInterval = null;
+
+let patientName = "{{ name }}"  // session se patient ka real name
+
+function activateSOS() {
+
+    if (patientLat === null || patientLng === null) {
+        alert("📍 Location not ready yet. Please wait...");
+        return;
+    }
+
+    fetch("/send_sos", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `lat=${patientLat}&lng=${patientLng}`
+    })
+    .then(() => {
+        alert(`🚨 SOS sent successfully by ${patientName}!`);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    if (!navigator.geolocation) { alert("❌ Geolocation not supported"); return; }
+    navigator.geolocation.getCurrentPosition(function (position) {
+        patientLat = position.coords.latitude;
+        patientLng = position.coords.longitude;
+        map = L.map("map").setView([patientLat, patientLng], 14);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap" }).addTo(map);
+
+        L.marker([patientLat, patientLng])
+            .addTo(map)
+            .bindPopup(`📍 You are here: ${patientName}`)
+            .openPopup();
+
+        L.marker([patientLat + 0.01, patientLng + 0.01])
+            .addTo(map)
+            .bindPopup("🚑 Nearest Ambulance");
+
+        L.marker([patientLat - 0.008, patientLng + 0.006])
+            .addTo(map)
+            .bindPopup("🧑‍⚕️ Health Worker Nearby");
+    }, function () { alert("❌ Please allow location access"); });
+});
+
+
+function startTelemedicine() {
+    let patientName = "{{ name }}";
+    let roomName = "telemed-" + patientName.replace(" ", "_") + "-" + Date.now();
+    
+    // Open Jitsi Meet in a new tab
+    window.open(`https://meet.jit.si/${roomName}`, "_blank");
+    
+    // Optionally, notify doctor by saving roomName in backend / sos_requests / session
+    fetch("/telemedicine_room", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: `room=${roomName}&patient=${patientName}`
+    });
+}
+
+function startAmbulanceTracking() {
+
+    // Start ambulance thoda door se
+    let ambLat = patientLat + 0.02;
+    let ambLng = patientLng + 0.02;
+
+    ambulanceMarker = L.marker([ambLat, ambLng])
+        .addTo(map)
+        .bindPopup("🚑 Ambulance on the way")
+        .openPopup();
+
+    ambulanceInterval = setInterval(() => {
+
+        // Ambulance patient ki taraf move karegi
+        ambLat -= 0.002;
+        ambLng -= 0.002;
+
+        ambulanceMarker.setLatLng([ambLat, ambLng]);
+
+        // Jab ambulance pahunch jaaye
+        if (Math.abs(ambLat - patientLat) < 0.001) {
+            ambulanceMarker.bindPopup("🚑 Ambulance arrived").openPopup();
+            clearInterval(ambulanceInterval);
+        }
+
+    }, 2000);
+}
+
+
+function callAmbulance() {
+
+    if (patientLat === null || patientLng === null) {
+        alert("📍 Location not ready yet. Please wait...");
+        return;
+    }
+
+    fetch("/call_ambulance", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
+    .then(() => {
+        alert("🚑 Ambulance request sent! Tracking started.");
+        startAmbulanceTracking();   // 🔥 IMPORTANT
+    });
+}
+
+
+
+</script>
+
+
+</body>
+</html>

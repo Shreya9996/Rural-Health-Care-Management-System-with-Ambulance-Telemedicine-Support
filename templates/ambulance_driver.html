@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ambulance Driver Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f4f8fb;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, #dc3545, #fd7e14);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        .request-card {
+            border-radius: 15px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-left: 6px solid #ffc107;
+        }
+        .accepted {
+            border-left-color: #28a745;
+        }
+        .badge {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-4">
+
+    <!-- HEADER -->
+    <div class="dashboard-header text-center">
+        <h2>🚑 Ambulance Driver Dashboard</h2>
+        <p>Live Emergency Requests & Tracking</p>
+    </div>
+
+    <!-- REQUEST LIST -->
+    {% for req in ambulance_requests %}
+    <div class="request-card {% if req.status == 'Accepted' %}accepted{% endif %}">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5>👤 Patient: {{ req.name }}</h5>
+
+            {% if req.status == "Requested" %}
+                <span class="badge bg-warning text-dark">Requested</span>
+            {% else %}
+                <span class="badge bg-success">Accepted</span>
+            {% endif %}
+        </div>
+
+        <p class="mt-2">
+            📍 Location: <b>{{ req.lat }}, {{ req.lng }}</b>
+        </p>
+
+        <!-- ACTION BUTTONS -->
+        {% if req.status == "Requested" %}
+            <form action="/accept_ambulance/{{ loop.index0 }}" method="POST">
+                <button class="btn btn-success">
+                    ✅ Accept Ride
+                </button>
+            </form>
+        {% else %}
+            <a 
+              class="btn btn-primary"
+              target="_blank"
+              href="https://www.google.com/maps/dir/?api=1&destination={{ req.lat }},{{ req.lng }}">
+              📍 Start Live Tracking
+            </a>
+        {% endif %}
+    </div>
+    {% else %}
+        <p class="text-muted">No ambulance requests yet.</p>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

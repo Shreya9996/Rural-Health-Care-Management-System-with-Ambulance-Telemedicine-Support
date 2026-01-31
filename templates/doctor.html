@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Dashboard</title>
+    <meta http-equiv="refresh" content="5"> <!-- auto refresh -->
+    <style>
+        body { font-family: Arial; background:#f4f4f4; }
+        .card {
+            background:white;
+            padding:15px;
+            margin:10px;
+            border-left:5px solid red;
+        }
+        button {
+            background:green;
+            color:white;
+            border:none;
+            padding:8px 12px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🚨 Emergency SOS Requests</h2>
+
+{% if sos_requests %}
+    {% for sos in sos_requests %}
+        <div class="card">
+            <p><b>Patient:</b> {{ sos.name }}</p>
+            <p><b>Location:</b> {{ sos.lat }}, {{ sos.lng }}</p>
+            <p><b>Status:</b> {{ sos.status }}</p>
+
+            {% if sos.status != "Accepted" %}
+                <form action="/accept_sos/{{ loop.index0 }}" method="POST">
+                    <button type="submit">Accept Request</button>
+                </form>
+            {% else %}
+                <button disabled style="background:gray; cursor: not-allowed;">Accepted</button>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No SOS requests yet.</p>
+{% endif %}
+
+
+<hr>
+<!-- <h2>🚑 Ambulance Requests</h2>
+
+{% if ambulance_requests %}
+    {% for amb in ambulance_requests %}
+        <div class="card" style="border-left:5px solid orange;">
+            <p><b>Patient:</b> {{ amb.name }}</p>
+            <p><b>Location:</b> {{ amb.lat }}, {{ amb.lng }}</p>
+            <p><b>Status:</b> {{ amb.status }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No ambulance requests yet.</p>
+{% endif %}
+
+{% for amb in ambulance_requests %}
+<div class="card mb-2 p-2">
+    <p><b>Patient:</b> {{ amb.name }}</p>
+    <p><b>Status:</b> {{ amb.status }}</p>
+
+    {% if amb.status == "Pending" %}
+    <form method="POST" action="/accept_ambulance/{{ loop.index0 }}">
+        <button class="btn btn-success btn-sm">
+            ✅ Accept Ambulance
+        </button>
+    </form>
+    {% endif %}
+</div>
+{% endfor %} -->
+
+<h3>🚑 Ambulance Requests</h3>
+
+{% for amb in ambulance_requests %}
+<div class="card mb-3 p-3 border-warning">
+    <p><b>Patient:</b> {{ amb.name }}</p>
+    <p><b>Location:</b> {{ amb.lat }}, {{ amb.lng }}</p>
+    <p><b>Status:</b> {{ amb.status }}</p>
+
+    {% if amb.status == "Requested" %}
+    <form method="POST" action="/accept_ambulance/{{ loop.index0 }}">
+        <button class="btn btn-success btn-sm">
+            ✅ Accept Ambulance
+        </button>
+    </form>
+    {% else %}
+        <span class="badge bg-success">Accepted</span>
+    {% endif %}
+</div>
+{% endfor %}
+
+
+</body>
+</html>
+
+
+
+
+

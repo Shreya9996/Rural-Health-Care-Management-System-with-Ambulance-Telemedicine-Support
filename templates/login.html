@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Rural Healthcare Support System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(to right, #0d6efd, #20c997);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background: #fff;
+            padding: 35px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .btn-login {
+            background: #0d6efd;
+            border: none;
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-login:hover {
+            background: #084298;
+        }
+
+        .location-status {
+            font-size: 14px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="text-center mb-4">
+        <h3>Login</h3>
+        <p class="text-muted">Rural Healthcare Support System</p>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form action="/login" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" required>
+        </div>
+
+
+        <!-- ROLE -->
+        <div class="mb-3">
+            <label class="form-label">Login As</label>
+            <select class="form-select" name="role" required>
+                <option value="">Select Role</option>
+                <option value="patient">Patient</option>
+                <option value="doctor">Doctor</option>
+                <option value="healthworker">Health Worker</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <!-- PHONE / EMAIL -->
+
+
+        <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" required>
+        </div>
+
+        <!-- PASSWORD -->
+        
+        <!-- LIVE LOCATION BUTTON -->
+        <div class="mb-3">
+            <button type="button" class="btn btn-outline-success w-100" onclick="getLiveLocation()" required>
+                📍 Get My Live Location
+            </button>
+            <div class="location-status text-success" id="locationStatus"></div>
+        </div>
+
+        <!-- HIDDEN LOCATION FIELDS -->
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+
+        <!-- LOGIN BUTTON -->
+        <div class="d-grid">
+            <button type="submit" class="btn btn-login">
+                Login
+            </button>
+        </div>
+        <div class="location-status text-success" id="locationStatus"></div>
+
+        <div class="mt-2 text-muted" id="locationDisplay"></div>
+
+
+    </form>
+</div>
+
+
+<script>
+function getLiveLocation() {
+    const status = document.getElementById("locationStatus");
+    const display = document.getElementById("locationDisplay");
+
+    if (!navigator.geolocation) {
+        status.innerHTML = "❌ Geolocation not supported";
+        return;
+    }
+
+    status.innerHTML = "⏳ Fetching live location...";
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            let lat = position.coords.latitude;
+            let lng = position.coords.longitude;
+
+            document.getElementById("latitude").value = lat;
+            document.getElementById("longitude").value = lng;
+
+            status.innerHTML = "✅ Live location captured & saved";
+
+            display.innerHTML = `
+                <strong>Latitude:</strong> ${lat}<br>
+                <strong>Longitude:</strong> ${lng}<br>
+                <a href="https://www.google.com/maps?q=${lat},${lng}" 
+                   target="_blank">
+                   📍 View on Google Maps
+                </a>
+            `;
+        },
+        function () {
+            status.innerHTML = "❌ Please allow location access";
+        }
+    );
+}
+</script>
+
+</body>
+</html>
