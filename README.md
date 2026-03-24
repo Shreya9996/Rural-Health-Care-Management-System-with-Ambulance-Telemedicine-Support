@@ -1,4 +1,5 @@
 # Rural-Health-Care-Management-System-with-Ambulance-Telemedicine-Support
+
 To provide quick medical assistance in rural areas  To enable online doctor consultation (telemedicine)  To manage ambulance requests with live location tracking  To create a centralized system for patients, doctors, and administrators  To improve emergency response time using technology
 
 
@@ -7,6 +8,7 @@ To provide quick medical assistance in rural areas  To enable online doctor cons
 Rural Health Care Management System is a modern platform designed to provide quick and efficient medical assistance in rural areas. It connects patients, doctors, and administrators through a centralized system, enabling telemedicine, ambulance services, and healthcare management.
 
 The platform improves emergency response time and ensures better access to healthcare services using technology.
+
 
 
 ✨ Features
@@ -37,6 +39,8 @@ Responsive Web Interface
 Works smoothly on mobile, tablet, and desktop devices.
 
 
+
+
 🏛️ For Doctors & Admin
 
 Centralized Dashboard
@@ -62,16 +66,21 @@ Faster coordination between patients and healthcare providers.
 
 🛠️ Technology Stack
 Frontend
-HTML5
-CSS3
-JavaScript
+
+   HTML5
+  CSS3
+  JavaScript
+  
 Backend
-Python
-Flask
-Database
-CSV-based dataset (can be extended to SQL/NoSQL)
+
+   Python
+   Flask
+   Database
+   CSV-based dataset 
+   
 Deployment
-Render
+
+  Render
 
 
 Project Structure
@@ -102,9 +111,7 @@ Run the application
 
 python app.py
 
-Open in browser
 
-http://127.0.0.1:5000/
 🌐 Live Demo
 
 👉 Try the App Here:
@@ -115,6 +122,7 @@ Patient enters details or requests service
 System processes request via Flask backend
 Doctors/Admin manage requests and responses
 Ambulance tracking and telemedicine services are provided
+
 
 📈 Future Enhancements
 Integration with real-time GPS tracking APIs
