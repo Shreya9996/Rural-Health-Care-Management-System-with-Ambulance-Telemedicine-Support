@@ -8,7 +8,7 @@ The platform improves emergency response time and ensures better access to healt
 
 
 
-✨ Features
+# ✨ Features
 👥 For Patients
 
 Easy Registration & Access
@@ -80,7 +80,7 @@ Deployment
   Render
 
 
-Project Structure
+# Project Structure
 
 Rural-Health-Care-System/
 ├── static/                          # CSS, JS, images  
@@ -130,16 +130,16 @@ AI-based health prediction system
 Mobile application support
 Notification system (SMS / Email alerts)
 
-🤝 Contributing
+# 🤝 Contributing
 
 Contributions are welcome!
 Please open an issue or submit a pull request for improvements.
 
-📄 License
+# 📄 License
 
 This project is licensed under the MIT License.
 
-📌 About
+# 📌 About
 
 This project aims to bridge the healthcare gap in rural areas by providing fast, reliable, and technology-driven medical services including telemedicine and ambulance support.
 
