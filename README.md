@@ -3,7 +3,7 @@
 To provide quick medical assistance in rural areas  To enable online doctor consultation (telemedicine)  To manage ambulance requests with live location tracking  To create a centralized system for patients, doctors, and administrators  To improve emergency response time using technology
 
 
-🏥 Rural Health Care Management System with Ambulance & Telemedicine Support
+# Rural Health Care Management System with Ambulance & Telemedicine Support
 
 Rural Health Care Management System is a modern platform designed to provide quick and efficient medical assistance in rural areas. It connects patients, doctors, and administrators through a centralized system, enabling telemedicine, ambulance services, and healthcare management.
 
@@ -41,7 +41,7 @@ Works smoothly on mobile, tablet, and desktop devices.
 
 
 
-🏛️ For Doctors & Admin
+# For Doctors & Admin
 
 Centralized Dashboard
 
@@ -64,7 +64,7 @@ Improved Emergency Response
 Faster coordination between patients and healthcare providers.
 
 
-🛠️ Technology Stack
+# Technology Stack
 Frontend
 
    HTML5
@@ -93,11 +93,13 @@ Rural-Health-Care-System/
 ├── requirements.txt  
 └── README.md  
 
+
 🚀 Getting Started
 🔧 Prerequisites
 Python 3.x
 pip
-📥 Installation
+
+# Installation
 
 Clone the repository
 
@@ -117,14 +119,14 @@ python app.py
 👉 Try the App Here:
 🔗 https://rural-health-care-management-system-with.onrender.com
 
-⚙️ How It Works
+#  How It Works
 Patient enters details or requests service
 System processes request via Flask backend
 Doctors/Admin manage requests and responses
 Ambulance tracking and telemedicine services are provided
 
 
-📈 Future Enhancements
+# Future Enhancements
 Integration with real-time GPS tracking APIs
 Advanced database integration (MySQL / MongoDB)
 AI-based health prediction system
@@ -149,4 +151,14 @@ This project aims to bridge the healthcare gap in rural areas by providing fast,
 This is my Flask project deployed on Render.
 
 **Live URL:** [Click Here]  https://rural-health-care-management-system-with.onrender.com
+
+
+
+📬 Contact & Support
+
+For queries, feature requests, or issues, reach out at:
+
+📧 Email: shreyapatil9681@gmail.com
+
+🔥 Star this repo if you find it useful! 🚀
 
